@@ -1,0 +1,91 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#66BB6A"
+    tools:context=".MainActivity" >
+    
+    <!-- search bar -->
+    <EditText
+        android:id="@+id/searchText"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:ems="7"
+        android:textSize="12sp"
+        android:hint="@string/search_bar_hint"
+        android:singleLine="true"
+        android:onClick="searchBar" >
+        <requestFocus />
+    </EditText>
+    
+    <!-- first row of buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp">
+        
+	    <Button
+	        android:id="@+id/planATourButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="2.7"
+	        android:background="@drawable/menu_tile"
+	        android:drawableTop="@drawable/plan_a_tour"
+	        android:longClickable="true"
+	        android:onClick="planATour"
+	        android:text="@string/plan_a_tour"
+	        android:textColor="@color/white"
+	        android:textSize="15sp" />
+	
+	    <Button
+	        android:id="@+id/browseCategoriesButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:background="@drawable/menu_tile_alternate"
+	        android:drawableTop="@drawable/browse_categories"
+	        android:onClick="browseCategories"
+	        android:text="@string/browse_categories"
+	        android:textColor="@color/white"
+	        android:textSize="15sp" />
+
+	    </LinearLayout>
+    
+    <!-- second row of buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp">
+
+	    <Button
+	        android:id="@+id/memoriesButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:background="@drawable/menu_tile_alternate"
+	        android:drawableTop="@drawable/memories"
+	        android:onClick="memories"
+	        android:text="@string/memories"
+	        android:textColor="@color/white"
+	        android:textSize="15sp" />
+	    
+	    <Button
+	        android:id="@+id/favouritesButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:background="@drawable/menu_tile"
+	        android:drawableTop="@drawable/favourites"
+	        android:onClick="favourites"
+	        android:text="@string/favourites"
+	        android:textColor="@color/white"
+	        android:textSize="15sp" />
+
+	    </LinearLayout>
+
+    <fragment
+        android:id="@+id/mainMenuMap"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+    
+</LinearLayout>

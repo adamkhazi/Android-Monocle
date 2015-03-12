@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Monocle</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="speech_prompt">Say something&#8230;</string>
+    <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
+    <string name="tap_on_mic">Tap on mic to speak</string>
+    <string name="search_bar_hint">Search</string>
+    <string name="search_activity">Search Activity</string>
+    <string name="search">Search</string>
+    <string name="plan_a_tour">Plan a tour</string>
+    <string name="browse_categories">Browse categories</string>
+    <string name="memories">Memories</string>
+    <string name="favourites">Favourites</string>
+    <string name="suggest">Suggest</string>
+    <string name="title_activity_browse">Browse</string>
+    <string name="title_activity_view_landmark">ViewLandmark</string>
+    <string name="add_button">Add to list</string>
+    <string name="go">Go!</string>
+    <string name="title_activity_plan_atour">PlanATour</string>
+    <string name="title_activity_dbadapter">DBAdapter</string>
+    <string name="title_activity_database_operations">DatabaseOperations</string>
+    <string name="title_activity_table_date">TableDate</string>
+    <string name="title_activity_browse_sub_cat">BrowseSubCat</string>
+    <string name="title_activity_list_landmarks">ListLandmarks</string>
+    <string name="title_activity_memory">Memory</string>
+
+</resources>
