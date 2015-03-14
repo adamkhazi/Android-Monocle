@@ -21,7 +21,7 @@ import android.widget.ListView;
 
 public class ListLandmarks extends Activity {
 
-	//globals
+	//Listview
 	List <Landmark> landmarks = new ArrayList<Landmark>();
 	ArrayAdapter<Landmark> arrayAdapter = null; 
 	private int categoryIdChosen;
@@ -74,7 +74,6 @@ public class ListLandmarks extends Activity {
 			downloadData.execute(DownloadData.LANDMARK_BY_CATEGORY); 
 		}
 		landmarks = downloadData.getLandmarkList();
-
 	}
 	
 	public void updateAdapter(){

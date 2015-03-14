@@ -22,8 +22,11 @@ public class DownloadData extends AsyncTask{
 	private List<Category> categories;
 	private List<Landmark> landmarks;
 	private int id;
+	private String searchQuery;
 	public final static String BROWSE_URL = "http://134.83.83.28:47216/mBrowse";
 	public final static String LANDMARK_BY_CATEGORY = "http://134.83.83.28:47216/mRetrieve?type=category&id=";
+	public final static String SEARCH_LANDMARK = "http://134.83.83.28:47216/mSearch?type=landmark&q=";
+	public final static String SEARCH_MEMORY = "http://134.83.83.28:47216/mSearch?type=memory&q=";
 	
 	public DownloadData(){
 		//hide constructor
@@ -43,6 +46,13 @@ public class DownloadData extends AsyncTask{
 		return this;
 	}
 	
+	public DownloadData createFromSourceForSearchQuery(List<Landmark> landmarks, String query){
+		this.landmarks = new ArrayList<Landmark>(landmarks);
+		this.searchQuery = query;
+		this.id = id;
+		return this;
+	}
+	
 	public List<Category> getCategoryList(){
 		return categories;
 	}
@@ -51,6 +61,9 @@ public class DownloadData extends AsyncTask{
 		return landmarks;
 	}
 	
+	public List<Landmark> getSearchResult(){
+		return landmarks;
+	}
 	@Override
 	protected void onPreExecute()
 	{
@@ -58,20 +71,27 @@ public class DownloadData extends AsyncTask{
 	} 
 	
 	// onPostExecute displays the results of the AsyncTask. @Override
-	protected void onPostExecute(Object result) {
+	protected void onPostExecute(Landmark landmarks) {
 		Log.v(VERBOSE_TAG,"Asynctask done");
+		Log.v(VERBOSE_TAG,this.landmarks.get(0).getName());
+		MainActivity.suggestionAdapter.notifyDataSetChanged();
+		MainActivity.matv.showDropDown();
 	}
 	
 	@Override
-	protected Object doInBackground(Object... urls) { 
-		try {
-			return downloadUrl((String) urls[0]); 
-		} catch (IOException e) {
-			return "Unable to retrieve web page. URL may be invalid.";
-		} 
+	protected List<Landmark> doInBackground(Object... urls) { 
+		
+			try {
+				return downloadUrl((String) urls[0]);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return landmarks; 
+		
 	}
 
-	private String downloadUrl(String myurl) throws IOException { 
+	private List<Landmark> downloadUrl(String myurl) throws IOException { 
 		InputStream is = null;
 		try {
 			//setup connection
@@ -83,17 +103,21 @@ public class DownloadData extends AsyncTask{
 				StringBuilder sb = new StringBuilder();
 				conn = setupConnection((sb.append(myurl).append(String.valueOf(id)))
 						.toString()); //add requested category id to url
+			} else if(myurl.equals(SEARCH_LANDMARK)) {
+				StringBuilder sb = new StringBuilder();
+				conn = setupConnection((sb.append(myurl).append(searchQuery))
+						.toString()); //add requested category id to url
 			}
 			//get http input stream
 			is = conn.getInputStream();
 			
 			//sort data and add to appropriate list
-			addDataToList(is, myurl);
+			return addDataToList(is, myurl);
 			
 			// Makes sure that the InputStream is closed after the app is
 			// finished using it.
 			
-			return "works";
+			
 		} finally {
 			if (is != null) {
 				is.close();
@@ -121,7 +145,7 @@ public class DownloadData extends AsyncTask{
 	}
 	
 	//add data downloaded to appropriate list
-	private void addDataToList(InputStream is, String myurl) throws IOException{
+	private List<Landmark> addDataToList(InputStream is, String myurl) throws IOException{
 		// Convert the InputStream into a string
 		InputStreamReader reader = new InputStreamReader(is, "UTF-8"); 
 		BufferedReader bReader = new BufferedReader(reader);
@@ -139,10 +163,19 @@ public class DownloadData extends AsyncTask{
 			String line;
 			while ((line = bReader.readLine()) != null){
 				Landmark newLandmark = new Landmark(line); //new category with packed string 
-				landmarks.add(newLandmark.simplifiedUnpack());  //unpack into object attributes and add to categories list
+				landmarks.add(newLandmark.simplifiedUnpack());  //unpack into object attributes and add to landmarks list
 			}
 			Log.v(VERBOSE_TAG,"fetching landmarks by category"); //debug message
+		} else if (myurl.equals(SEARCH_LANDMARK)){
+			String line;
+			while ((line = bReader.readLine()) != null){
+				Landmark newLandmark = new Landmark(line); //new category with packed string 
+				landmarks.add(newLandmark.simplifiedUnpack());  //unpack into object attributes and add to landmarks list
+			}
+			Log.v(VERBOSE_TAG,"fetching search results"); //debug message
+			Log.v(VERBOSE_TAG,landmarks.get(0).getName());
 		}
+		return landmarks;
 	}
 }
 

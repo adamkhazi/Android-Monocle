@@ -1,20 +1,28 @@
 package com.github.adamkhazi.monocle;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
@@ -30,7 +38,11 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 	
 	LocationManager locationManager;
 	private static final LatLng LONDON_COORDINATES = new LatLng(51.5085300, -0.1257400);
-	private AutoCompleteTextView mat;
+	
+	//Autocomplete Search bar
+	public static AutoCompleteTextView matv;
+	public static ArrayAdapter<Landmark> suggestionAdapter = null;
+	private List<Landmark> landmarkSuggestions = new ArrayList<Landmark>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +51,58 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 		configureMap(((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mainMenuMap)).getMap());
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 		
-		//Multi auto complete text view
-		
-	   String[] landmarks = {"Big Ben","Be","Big Square"};
-	   ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,landmarks);
+	   matv = (AutoCompleteTextView) findViewById(R.id.mainmenusearchfield);
 	   
-	   mat = (AutoCompleteTextView) findViewById(R.id.mainmenusearchfield);
 	   
-	   mat.setAdapter(adapter);
+	   //text changed action
+	   matv.addTextChangedListener(new TextWatcher() {
+
+		   @Override
+		   public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+			   // When user changes text 
+			  String searchQuery = matv.getText().toString();
+			  downloadLandmarks(searchQuery);
+			  
+			  
+		   }
+
+		   @Override
+		   public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+			   // TODO Auto-generated method stub
+
+		   }
+
+		   @Override
+		   public void afterTextChanged(Editable arg0) {
+			   // TODO Auto-generated method stub    
+			  
+		   }
+	   });
+		   
+	   //item selected action
+	   matv.setOnItemSelectedListener(new OnItemSelectedListener() {
+		    @Override
+		    public void onItemSelected (AdapterView<?> parent, View view, int pos, long id) {
+		    	 Landmark landmarkChosen = (Landmark) parent.getAdapter().getItem(pos);
+           	  	 Intent myIntent = new Intent(view.getContext(), ViewLandmark.class);
+                 myIntent.putExtra(Browse.EXTRA_MESSAGE, landmarkChosen.getId());
+                 startActivityForResult(myIntent, 0);
+		    }
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	   
-	   //mat.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+	   suggestionAdapter = new ArrayAdapter<Landmark>(this,
+               android.R.layout.simple_dropdown_item_1line, landmarkSuggestions);
+	   suggestionAdapter.setNotifyOnChange(true);
+	   matv.setAdapter(suggestionAdapter);
+	   
+	   
+	   
 	}
 
 	@Override
@@ -203,5 +257,23 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 			.target(LONDON_COORDINATES).zoom(8).build()));
 		map.getUiSettings().setMyLocationButtonEnabled(true);
 		map.setMyLocationEnabled(true);
+	}
+	
+	/**
+	 * used to populate search suggestion list
+	 */
+	@SuppressWarnings("unchecked")
+	private void downloadLandmarks(String query){
+		// Check if there is a network connection available
+		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+		
+		DownloadData downloadData  = new DownloadData().createFromSourceForSearchQuery(landmarkSuggestions, query);
+		if (networkInfo != null && networkInfo.isConnected()) {
+			//execute a new asynchronous task
+			downloadData.execute(DownloadData.SEARCH_LANDMARK); 
+		}
+		landmarkSuggestions = downloadData.getSearchResult();
+		matv.showDropDown();
 	}
 }

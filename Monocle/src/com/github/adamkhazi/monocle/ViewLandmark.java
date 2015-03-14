@@ -33,9 +33,9 @@ public class ViewLandmark extends Activity implements OnTouchListener {
 
 	//the images to display for gallery view
 	 Integer[] imageIDs = {
-	 R.drawable.pic1,
-	 R.drawable.pic2,
-	 R.drawable.pic3,
+		 R.drawable.pic1,
+		 R.drawable.pic2,
+		 R.drawable.pic3,
 	 };
 	 
 	 int gallery_grid_Images[]={R.drawable.pic1,R.drawable.pic2,R.drawable.pic3};
