@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,6 +30,7 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 	
 	LocationManager locationManager;
 	private static final LatLng LONDON_COORDINATES = new LatLng(51.5085300, -0.1257400);
+	private AutoCompleteTextView mat;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,17 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 		setContentView(R.layout.activity_main);
 		configureMap(((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mainMenuMap)).getMap());
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+		
+		//Multi auto complete text view
+		
+	   String[] landmarks = {"Big Ben","Be","Big Square"};
+	   ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,landmarks);
+	   
+	   mat = (AutoCompleteTextView) findViewById(R.id.mainmenusearchfield);
+	   
+	   mat.setAdapter(adapter);
+	   
+	   //mat.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 	}
 
 	@Override

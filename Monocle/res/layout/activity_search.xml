@@ -7,10 +7,10 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#FFFF99" >
+    android:background="#66BB6A" >
     
 	<!-- search bar -->
-    <EditText
+    <MultiAutoCompleteTextView
         android:id="@+id/searchtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,11 +20,11 @@
         android:layout_alignParentTop="true"
         android:drawableEnd="@drawable/icon_mic_field"
         android:ems="7"
-        android:textSize="25sp"
+        android:textSize="15sp"
         android:hint="@string/search_bar_hint"
         android:singleLine="true" >
         <requestFocus />
-    </EditText>
+    </MultiAutoCompleteTextView>
 
     <!-- list view showing search results -->
    <ListView
