@@ -10,8 +10,8 @@
     <string name="search_bar_hint">Search</string>
     <string name="search_activity">Search Activity</string>
     <string name="search">Search</string>
-    <string name="plan_a_tour">Plan a tour</string>
-    <string name="browse_categories">Browse categories</string>
+    <string name="plan_a_tour">Planner</string>
+    <string name="browse_categories">Browse</string>
     <string name="memories">Memories</string>
     <string name="favourites">Favourites</string>
     <string name="suggest">Suggest</string>

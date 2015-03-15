@@ -15,10 +15,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -62,6 +65,7 @@ public class PlanATour extends FragmentActivity implements LocationListener, Loc
 		
 		map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 		CameraPosition cameraPosition = new CameraPosition.Builder().target(LONDON_COORDINATES).zoom(11).build();
+		
 		//positioning camera view in a reasonable position to see all markers, and zooming in
 		map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 		map.getUiSettings().setMyLocationButtonEnabled(true);
@@ -158,9 +162,10 @@ public class PlanATour extends FragmentActivity implements LocationListener, Loc
 		// This is the array adapter, it takes the context of the activity as a 
 		// first parameter, the type of list view as a second parameter and your 
 		// array as a third parameter.
-		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.mylist, rootCategoryList);
+		//ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.mylist, rootCategoryList);
 
-		lv.setAdapter(arrayAdapter); 
+		FancyAdapter fancyAdapter = new FancyAdapter(rootCategoryList);
+		lv.setAdapter(fancyAdapter); 
 		lv.setOnItemClickListener(new OnItemClickListener()
 		{
 			@Override
@@ -200,6 +205,56 @@ public class PlanATour extends FragmentActivity implements LocationListener, Loc
 			}
 		});
 	}
+	
+	//adapter used for list view
+    private class FancyAdapter extends BaseAdapter {
+
+        private String[] mData;
+
+        public FancyAdapter(String[] data) {
+            mData = data;
+        }
+
+        public FancyAdapter(List<String> rootCategoryList) {
+			// TODO Auto-generated constructor stub
+        	mData=new String[rootCategoryList.size()];
+        	mData = rootCategoryList.toArray(mData);
+		}
+
+		@Override
+        public int getCount() {
+            return mData.length;
+        }
+
+        @Override
+        public String getItem(int position) {
+            return mData[position];
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            TextView result;
+
+            if (convertView == null) { //list item in list view pointed to, from here
+                result = (TextView) getLayoutInflater().inflate(R.layout.mylist, parent, false);
+            } else {
+                result = (TextView) convertView;
+            }
+
+            final String cheese = getItem(position);
+            result.setText(cheese);
+
+            return result;
+        }
+
+    }
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

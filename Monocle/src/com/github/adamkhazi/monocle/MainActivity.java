@@ -274,6 +274,5 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 			downloadData.execute(DownloadData.SEARCH_LANDMARK); 
 		}
 		landmarkSuggestions = downloadData.getSearchResult();
-		matv.showDropDown();
 	}
 }
