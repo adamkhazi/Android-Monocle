@@ -27,6 +27,9 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
+import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.ec2.model.Region;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.LocationSource;
@@ -62,8 +65,6 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 			   // When user changes text 
 			  String searchQuery = matv.getText().toString();
 			  downloadLandmarks(searchQuery);
-			  
-			  
 		   }
 
 		   @Override
@@ -155,32 +156,33 @@ public class MainActivity extends FragmentActivity implements LocationListener, 
 	 */
 	public void memories(View view)
 	{
-		//get current location coordinates 
-		LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
-		Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		double longitude = location.getLongitude();
-		double latitude = location.getLatitude();
-		
-		Log.i("longitude displayed", String.valueOf(longitude));
-		Log.i("latitude displayed", String.valueOf(latitude));
+//		//get current location coordinates 
+//		LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
+//		Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//		double longitude = location.getLongitude();
+//		double latitude = location.getLatitude();
+//		
+//		Log.i("longitude displayed", String.valueOf(longitude));
+//		Log.i("latitude displayed", String.valueOf(latitude));
+//
+//		//get current date 
+//		Calendar c = Calendar.getInstance();
+//		SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+//		String formattedDate = df.format(c.getTime());
+//		Log.i("time displayed", formattedDate);
+//		
+//		//get current time 
+//		Date now = new Date();
+//		SimpleDateFormat sdf = new SimpleDateFormat("K:mm a");
+//		String formattedTime = sdf.format(now);
+//		Log.i("date displayed", formattedTime);
+//
+//		//save to database 
+////		DatabaseOperations DB = new DatabaseOperations(this);
+////		DB.putInformation(DB, formattedTime, formattedDate, String.valueOf(latitude), String.valueOf(longitude));
+//		Toast.makeText(getBaseContext(), "successfully put data into database", Toast.LENGTH_SHORT).show();
+//		//finish();
 
-		//get current date 
-		Calendar c = Calendar.getInstance();
-		SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-		String formattedDate = df.format(c.getTime());
-		Log.i("time displayed", formattedDate);
-		
-		//get current time 
-		Date now = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("K:mm a");
-		String formattedTime = sdf.format(now);
-		Log.i("date displayed", formattedTime);
-
-		//save to database 
-//		DatabaseOperations DB = new DatabaseOperations(this);
-//		DB.putInformation(DB, formattedTime, formattedDate, String.valueOf(latitude), String.valueOf(longitude));
-		Toast.makeText(getBaseContext(), "successfully put data into database", Toast.LENGTH_SHORT).show();
-		//finish();
 	}
 	
 	/**

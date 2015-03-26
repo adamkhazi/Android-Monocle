@@ -115,9 +115,7 @@ public class DownloadData extends AsyncTask{
 			return addDataToList(is, myurl);
 			
 			// Makes sure that the InputStream is closed after the app is
-			// finished using it.
-			
-			
+			// finished using it.	
 		} finally {
 			if (is != null) {
 				is.close();
@@ -125,7 +123,6 @@ public class DownloadData extends AsyncTask{
 		}
 	}
 	
-	//TODO: change error mechanism to try/catch for specificity
 	private HttpURLConnection setupConnection(String myurl) throws IOException{
 		URL url = new URL(myurl);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection(); 
@@ -137,7 +134,7 @@ public class DownloadData extends AsyncTask{
 		// Starts the query
 		conn.connect();
 		
-		//reponse code
+		//response code
 		int response = conn.getResponseCode(); 
 		Log.v(VERBOSE_TAG, "The response is: " + response); 
 		
