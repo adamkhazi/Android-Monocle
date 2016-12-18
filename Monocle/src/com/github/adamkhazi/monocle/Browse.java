@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class Browse extends Activity{
+//a test comment
 	
 	List <Category> categories = new ArrayList<Category>();
 	ArrayAdapter<Category> arrayAdapter = null; 
